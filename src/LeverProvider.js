@@ -7,8 +7,12 @@ import Context from './context';
 export default class LeverProvider extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    isDev: PropTypes.bool.isRequired,
+    isDev: PropTypes.bool,
     features: PropTypes.object.isRequired
+  };
+
+  static defaultProps = {
+    isDev: false
   };
 
   state = {

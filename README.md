@@ -80,7 +80,7 @@ ReactDOM.render(
 
 ### isDev
 
-> `boolean` | Required
+> `boolean` | Optional
 
 Is the app in a development environment?
 
