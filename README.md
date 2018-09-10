@@ -80,6 +80,8 @@ ReactDOM.render(
 
 > `boolean` | Required
 
+Is the app in a development environment?
+
 If `false`, and a feature is flagged with `enabled` and `devOnly` attributes as `true`, then the feature will not render.
 
 ### features
