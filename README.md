@@ -2,7 +2,7 @@
 
 > Minimalistic feature toggling for React
 
-<p align="center"><img src="./react-lever.png" width="400px"></img></p>
+<p align="center"><img src="./react-lever.png" width="300px"></img></p>
 
 ## Table of Contents
 
