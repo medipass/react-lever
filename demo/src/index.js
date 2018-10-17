@@ -34,7 +34,6 @@ const features = {
   feature4: { enabled: false },
   feature5: { enabled: false }
 };
-
 render(
   <LeverProvider isDev={process.env.APP_ENV === 'development'} features={features}>
     <LeverDemo />

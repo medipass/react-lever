@@ -1,38 +1,40 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 
 import Context from './context';
 
-const Lever = ({ children, feature, devOnly, enabled }) => (
-  <Context.Consumer>
-    {({ features, isDev }) => {
-      // If the feature is enabled, then we should render it.
-      let shouldRender = enabled || _get(features, `[${feature}].enabled`);
+export default class Lever extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    devOnly: PropTypes.bool,
+    enabled: PropTypes.bool,
+    feature: PropTypes.string.isRequired
+  };
 
-      // If feature is a 'dev only' feature, and the environment is not a development environment, don't render the button.
-      if ((devOnly || _get(features, `[${feature}].devOnly`)) && !isDev) {
-        shouldRender = false;
-      }
+  static defaultProps = {
+    devOnly: false,
+    enabled: false
+  };
 
-      if (shouldRender) {
-        return children;
-      }
-      return null;
-    }}
-  </Context.Consumer>
-);
+  render = () => {
+    return <Context.Consumer>{this.renderChildren}</Context.Consumer>;
+  };
 
-Lever.propTypes = {
-  children: PropTypes.node.isRequired,
-  devOnly: PropTypes.bool,
-  enabled: PropTypes.bool,
-  feature: PropTypes.string.isRequired
-};
+  renderChildren = ({ features, isDev }) => {
+    const { children, feature, devOnly, enabled } = this.props;
 
-Lever.defaultProps = {
-  devOnly: false,
-  enabled: false
-};
+    // If the feature is enabled, then we should render it.
+    let shouldRender = enabled || _get(features, `[${feature}].enabled`);
 
-export default Lever;
+    // If feature is a 'dev only' feature, and the environment is not a development environment, don't render the button.
+    if ((devOnly || _get(features, `[${feature}].devOnly`)) && !isDev) {
+      shouldRender = false;
+    }
+
+    if (shouldRender) {
+      return children;
+    }
+    return null;
+  };
+}

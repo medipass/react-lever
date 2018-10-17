@@ -27,6 +27,7 @@
     "@medipass/eslint-config-react-medipass": "8.3.6",
     "babel-eslint": "9.0.0",
     "eslint": "5.5.0",
+    "eslint-plugin-import": "2.14.0",
     "eslint-plugin-prettier": "2.6.2",
     "nwb": "0.23.0",
     "prop-types": "15.6.2",
