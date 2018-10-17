@@ -1,6 +1,6 @@
 # React Lever
 
-> Minimalistic feature toggling for React
+> A library to conditionally render React components based on feature toggles.
 
 <p align="center"><img src="./react-lever.png" width="300px"></img></p>
 
