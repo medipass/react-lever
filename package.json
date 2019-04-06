@@ -18,10 +18,10 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "lodash": "4.17.10"
+    "lodash": "4.17.11"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
     "@medipass/eslint-config-react-medipass": "8.3.6",
