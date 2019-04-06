@@ -10,6 +10,8 @@
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
+    - [Using Components](#using-components)
+    - [Using Hooks](#using-hooks)
   - [`<LeverProvider>` props](#leverprovider-props)
     - [isDev](#isdev)
     - [features](#features)
@@ -17,6 +19,9 @@
     - [feature](#feature)
     - [enabled](#enabled)
     - [devOnly](#devonly)
+  - [`useLever(feature[, options])`](#useleverfeature-options)
+    - [feature](#feature-1)
+    - [options](#options)
   - [License](#license)
 
 ## Installation
@@ -33,6 +38,8 @@ yarn add react-lever
 
 ## Usage
 
+### Using Components
+
 Wrap your application in a `<LeverProvider>`, and your features in a `<Lever>` like so:
 
 ```jsx
@@ -40,26 +47,28 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Lever, { LeverProvider } from 'react-lever';
 
-const AnimalPhotos = () => (
-  <Fragment>
-    <h1>Photos of animals</h1>
+function AnimalPhotos() {
+  return (
+    <Fragment>
+      <h1>Photos of animals</h1>
 
-    {/* This will render as enabled=true */}
-    <Lever feature="dogs">
-      <DogPhotos />
-    </Lever>
+      {/* This will render as enabled=true */}
+      <Lever feature="dogs">
+        <DogPhotos />
+      </Lever>
 
-    {/* This will not render as enabled=false */}
-    <Lever feature="cats">
-      <CatPhotos />
-    </Lever>
+      {/* This will not render as enabled=false */}
+      <Lever feature="cats">
+        <CatPhotos />
+      </Lever>
 
-    {/* This will render as enabled=true, but will only render if in a development environment as devOnly=true. */}
-    <Lever feature="parrots">
-      <ParrotPhotos />
-    </Lever>
-  </Fragment>
-)
+      {/* This will render as enabled=true, but will only render if in a development environment as devOnly=true. */}
+      <Lever feature="parrots">
+        <ParrotPhotos />
+      </Lever>
+    </Fragment>
+  )
+}
 
 const features = {
   dogs: { enabled: true },
@@ -73,7 +82,28 @@ ReactDOM.render(
   </LeverProvider>,
   document.querySelector('#root')
 );
+```
 
+### Using Hooks
+
+React Lever also supports React Hooks
+
+```jsx
+import { useLever } from 'react-lever';
+
+function AnimalPhotos() {
+  const isDogPhotosEnabled = useLever('dogs');
+  const isCatPhotosEnabled = useLever('cat');
+  const isParrotPhotosEnabled = useLever('parrot');
+  return (
+    <Fragment>
+      <h1>Photos of animals</h1>
+      {isDogPhotosEnabled && <DogPhotos />}
+      {isCatPhotosEnabled && <CatPhotos />}
+      {isParrotPhotosEnabled && <ParrotPhotos />}
+    </Fragment>
+  )
+}
 ```
 
 ## `<LeverProvider>` props
@@ -111,6 +141,18 @@ If `true`, then the feature will render. This prop overrides the `enabled` flag 
 > `boolean` | Optional
 
 If `true`, then the feature is available to the development environment only (as specified in `<LeverProvider>`'s `isDev` prop). This prop overrides the `devOnly` flag in the `<LeverProvider>`'s features.
+
+## `useLever(feature[, options])`
+
+### feature
+
+> `string` | Required
+
+The key (or name) of the feature.
+
+### options
+
+> `Object{ enabled, devOnly }` | Optional
 
 ## License
 

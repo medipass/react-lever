@@ -1,30 +1,45 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 
-import Lever, { LeverProvider } from '../../src';
+import Lever, { useLever, LeverProvider } from '../../src';
 
-class LeverDemo extends Component {
-  render() {
-    return (
-      <div>
-        <Lever feature="feature1">
-          <div>Feature 1</div>
-        </Lever>
-        <Lever feature="feature2">
-          <div>Feature 2</div>
-        </Lever>
-        <Lever feature="feature3">
-          <div>Feature 3</div>
-        </Lever>
-        <Lever enabled feature="feature4">
-          <div>Feature 4</div>
-        </Lever>
-        <Lever enabled devOnly feature="feature4">
-          <div>Feature 5</div>
-        </Lever>
-      </div>
-    );
-  }
+function LeverDemoComponents() {
+  return (
+    <div>
+      <Lever feature="feature1">
+        <div>Feature 1</div>
+      </Lever>
+      <Lever feature="feature2">
+        <div>Feature 2</div>
+      </Lever>
+      <Lever feature="feature3">
+        <div>Feature 3</div>
+      </Lever>
+      <Lever enabled feature="feature4">
+        <div>Feature 4</div>
+      </Lever>
+      <Lever enabled devOnly feature="feature4">
+        <div>Feature 5</div>
+      </Lever>
+    </div>
+  );
+}
+
+function LeverDemoHooks() {
+  const isFeature1Enabled = useLever('feature1');
+  const isFeature2Enabled = useLever('feature2');
+  const isFeature3Enabled = useLever('feature3');
+  const isFeature4Enabled = useLever('feature4', { enabled: true });
+  const isFeature5Enabled = useLever('feature5', { enabled: true, devOnly: true });
+  return (
+    <div>
+      {isFeature1Enabled && <div>Feature 1</div>}
+      {isFeature2Enabled && <div>Feature 2</div>}
+      {isFeature3Enabled && <div>Feature 3</div>}
+      {isFeature4Enabled && <div>Feature 4</div>}
+      {isFeature5Enabled && <div>Feature 5</div>}
+    </div>
+  );
 }
 
 const features = {
@@ -36,7 +51,10 @@ const features = {
 };
 render(
   <LeverProvider isDev={process.env.APP_ENV === 'development'} features={features}>
-    <LeverDemo />
+    <h1>Components</h1>
+    <LeverDemoComponents />
+    <h1>Hooks</h1>
+    <LeverDemoHooks />
   </LeverProvider>,
   document.querySelector('#demo')
 );
