@@ -17,6 +17,7 @@
     - [features](#features)
   - [`<Lever>` props](#lever-props)
     - [feature](#feature)
+    - [either](#either)
     - [enabled](#enabled)
     - [devOnly](#devonly)
   - [`useLever(feature[, options])`](#useleverfeature-options)
@@ -62,6 +63,18 @@ function AnimalPhotos() {
         <CatPhotos />
       </Lever>
 
+      {/* This will not render as cats is disabled (all feature have to be enabled) */}
+      <Lever feature={['dogs', 'cats']}>
+        <DogPhotos />
+        <CatPhotos />
+      </Lever>
+
+      {/* This will render as dogs is enabled (at least one feature has to be enabled) */}
+      <Lever either feature={['dogs', 'cats']}>
+        <DogPhotos />
+        <CatPhotos />
+      </Lever>
+
       {/* This will render as enabled=true, but will only render if in a development environment as devOnly=true. */}
       <Lever feature="parrots">
         <ParrotPhotos />
@@ -94,12 +107,26 @@ import { useLever } from 'react-lever';
 function AnimalPhotos() {
   const isDogPhotosEnabled = useLever('dogs');
   const isCatPhotosEnabled = useLever('cat');
+  const isDogAndCatPhotosEnabled = useLever(['cat', 'dogs']);
+  const isDogOrCatPhotosEnabled = useLever(['cat', 'dogs'], { either: true });
   const isParrotPhotosEnabled = useLever('parrot');
   return (
     <Fragment>
       <h1>Photos of animals</h1>
       {isDogPhotosEnabled && <DogPhotos />}
       {isCatPhotosEnabled && <CatPhotos />}
+      {isDogAndCatPhotosEnabled && (
+        <Fragment>
+          <DogPhotos />
+          <CatPhotos />
+        </Fragment>
+      )}
+      {isDogOrCatPhotosEnabled && (
+        <Fragment>
+          <DogPhotos />
+          <CatPhotos />
+        </Fragment>
+      )}
       {isParrotPhotosEnabled && <ParrotPhotos />}
     </Fragment>
   )
@@ -126,9 +153,15 @@ The global features of the application.
 
 ### feature
 
-> `string` | Required
+> `string | Array<string>` | Required
 
 The key (or name) of the feature.
+
+### either
+
+> `boolean` | Default: `false`
+
+If the `feature` prop is an array & either of the features are enabled, then render the children.
 
 ### enabled
 
@@ -152,7 +185,7 @@ The key (or name) of the feature.
 
 ### options
 
-> `Object{ enabled, devOnly }` | Optional
+> `Object{ enabled, either, devOnly }` | Optional
 
 ## License
 

@@ -21,6 +21,12 @@ function LeverDemoComponents() {
       <Lever enabled devOnly feature="feature4">
         <div>Feature 5</div>
       </Lever>
+      <Lever feature={['feature1', 'feature2']}>
+        <div>Feature 1 and Feature 2</div>
+      </Lever>
+      <Lever either feature={['feature1', 'feature2']}>
+        <div>Feature 1 or Feature 2</div>
+      </Lever>
     </div>
   );
 }
@@ -31,6 +37,8 @@ function LeverDemoHooks() {
   const isFeature3Enabled = useLever('feature3');
   const isFeature4Enabled = useLever('feature4', { enabled: true });
   const isFeature5Enabled = useLever('feature5', { enabled: true, devOnly: true });
+  const isFeature1And2Enabled = useLever(['feature1', 'feature2']);
+  const isFeature1Or2Enabled = useLever(['feature1', 'feature2'], { either: true });
   return (
     <div>
       {isFeature1Enabled && <div>Feature 1</div>}
@@ -38,6 +46,8 @@ function LeverDemoHooks() {
       {isFeature3Enabled && <div>Feature 3</div>}
       {isFeature4Enabled && <div>Feature 4</div>}
       {isFeature5Enabled && <div>Feature 5</div>}
+      {isFeature1And2Enabled && <div>Feature 1 and Feature 2</div>}
+      {isFeature1Or2Enabled && <div>Feature 1 or Feature 2</div>}
     </div>
   );
 }
