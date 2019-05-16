@@ -5,7 +5,7 @@ import Context from './context';
 
 export default function useLever(feature, options = {}) {
   const { features: allFeatures, isDev } = React.useContext(Context);
-  const { devOnly, enabled } = options;
+  const { devOnly, disabled, forceEnabled } = options;
 
   let features = [feature];
   if (Array.isArray(feature)) {
@@ -14,7 +14,10 @@ export default function useLever(feature, options = {}) {
 
   const isEnabledSet = features.map(feature => {
     // If the feature is enabled, then we should render it.
-    let isEnabled = enabled || _get(allFeatures, `[${feature}].enabled`);
+    let isEnabled = forceEnabled || _get(allFeatures, `[${feature}].enabled`);
+    if (disabled) {
+      isEnabled = !isEnabled;
+    }
 
     // If feature is a 'dev only' feature, and the environment is not a development environment, don't render the button.
     if ((devOnly || _get(allFeatures, `[${feature}].devOnly`)) && !isDev) {
