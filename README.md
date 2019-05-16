@@ -36,7 +36,25 @@ or install with [Yarn](https://yarnpkg.com) if you prefer:
 ```
 yarn add react-lever
 ```
-
+- [React Lever](#react-lever)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Using Components](#using-components)
+    - [Using Hooks](#using-hooks)
+  - [`<LeverProvider>` props](#leverprovider-props)
+    - [isDev](#isdev)
+    - [features](#features)
+  - [`<Lever>` props](#lever-props)
+    - [feature](#feature)
+    - [either](#either)
+    - [disabled](#disabled)
+    - [forceEnabled](#forceenabled)
+    - [devOnly](#devonly)
+  - [`useLever(feature[, options])`](#useleverfeature-options)
+    - [feature](#feature-1)
+    - [options](#options)
+  - [License](#license)
 ## Usage
 
 ### Using Components
@@ -75,6 +93,21 @@ function AnimalPhotos() {
         <CatPhotos />
       </Lever>
 
+      {/* This will render as enabled=false */}
+      <Lever disabled feature="cats">
+        You can't see mah catz!
+      </Lever>
+
+      {/* This will render as cats & koalas are disabled (all features have to be disabled) */}
+      <Lever disabled feature={['cats', 'koalas']}>
+        You can't see mah catz or koalaz!
+      </Lever>
+
+      {/* This will render as cats is disabled (at least one feature has to be disabled) */}
+      <Lever either disabled feature={['dogs', 'cats']}>
+        I may have a dog and I may have a cat
+      </Lever>
+
       {/* This will render as enabled=true, but will only render if in a development environment as devOnly=true. */}
       <Lever feature="parrots">
         <ParrotPhotos />
@@ -86,7 +119,8 @@ function AnimalPhotos() {
 const features = {
   dogs: { enabled: true },
   cats: { enabled: false },
-  parrots: { enabled: true, devOnly: true }
+  parrots: { enabled: true, devOnly: true },
+  koalas: { enabled: false },
 };
 
 ReactDOM.render(
@@ -106,9 +140,12 @@ import { useLever } from 'react-lever';
 
 function AnimalPhotos() {
   const isDogPhotosEnabled = useLever('dogs');
-  const isCatPhotosEnabled = useLever('cat');
-  const isDogAndCatPhotosEnabled = useLever(['cat', 'dogs']);
-  const isDogOrCatPhotosEnabled = useLever(['cat', 'dogs'], { either: true });
+  const isCatPhotosEnabled = useLever('cats');
+  const isDogAndCatPhotosEnabled = useLever(['cats', 'dogs']);
+  const isDogOrCatPhotosEnabled = useLever(['cats', 'dogs'], { either: true });
+  const isCatPhotosDisabled = useLever('cats', { disabled: true });
+  const isCatAndKoalaPhotosDisabled = useLever(['cats', 'koalas'], { disabled: true });
+  const isCatOrDogPhotosDisabled = useLever(['cats', 'koalas'], { disabled: true, either: true });
   const isParrotPhotosEnabled = useLever('parrot');
   return (
     <Fragment>
@@ -127,6 +164,9 @@ function AnimalPhotos() {
           <CatPhotos />
         </Fragment>
       )}
+      {isCatPhotosDisabled && `You can't see mah catz!`}
+      {isCatAndKoalaPhotosDisabled && `You can't see mah catz or koalaz!`}
+      {isCatOrDogPhotosDisabled && `I may not have a dog and/or I may not have a cat`}
       {isParrotPhotosEnabled && <ParrotPhotos />}
     </Fragment>
   )
@@ -163,7 +203,13 @@ The key (or name) of the feature.
 
 If the `feature` prop is an array & either of the features are enabled, then render the children.
 
-### enabled
+### disabled
+
+> `boolean` | Default: `false`
+
+If the feature is disabled, then the feature will render.
+
+### forceEnabled
 
 > `boolean` | Optional
 
@@ -185,7 +231,7 @@ The key (or name) of the feature.
 
 ### options
 
-> `Object{ enabled, either, devOnly }` | Optional
+> `Object{ disabled, forceEnabled, either, devOnly }` | Optional
 
 ## License
 
