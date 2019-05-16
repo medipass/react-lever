@@ -1,6 +1,6 @@
 {
   "name": "react-lever",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Minimalistic feature toggling for React",
   "main": "lib/index.js",
   "module": "es/index.js",
